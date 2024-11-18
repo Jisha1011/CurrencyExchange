@@ -21,16 +21,18 @@ public class BillGenerator {
 	private double finalAmount = 0f;
 
 	public Optional<FinalAmount> getFinalBill(Bill bill) {
+		
+		System.out.println(bill.toString());
 
 		// set UserType and customerTenure
-		billObject.setUserType(bill.getUserType());
-		billObject.setCustomerTenure(bill.getCustomerTenure());
+		//billObject.setUserType(bill.getUserType());
+		//billObject.setCustomerTenure(bill.getCustomerTenure());
 
 		// calculate total amount on grocery and other items
 		bill.getItem().stream().forEach(x -> calculateTotalAmount(x));
 
 		// calculate applicable discount on non grocery item
-		calculateFinalPrice(nonGroceryTotal);
+		calculateFinalPrice(nonGroceryTotal,bill.getCustomerTenure(),bill.getUserType());
 
 		finalAmount = nonGroceryTotal + groceryTotal;
 
@@ -43,7 +45,8 @@ public class BillGenerator {
 	}
 
 	private Optional<FinalAmount> calculateCurrencyRateAndFinalAmount(String originalCurrency, String targetCurrency) {
-		Optional<Long> rate = ex.convertCurrency(originalCurrency, targetCurrency);
+		ExchangeRate e = new ExchangeRate();
+		Optional<Long> rate = e.convertCurrency(originalCurrency, targetCurrency);
 
 		if (!rate.isEmpty()) {
 			groceryTotal = groceryTotal * rate.get();
@@ -70,18 +73,18 @@ public class BillGenerator {
 		}
 	}
 
-	private void calculateFinalPrice(double amount)
+	private void calculateFinalPrice(double amount,int customerTenure,String userType)
 
 	{
-		if (billObject.getUserType().equalsIgnoreCase("customer") && billObject.getCustomerTenure() > 2) {
+		if (userType.equalsIgnoreCase("customer") && customerTenure > 2) {
 			calculateDiscount(amount, 0.05f);
 
 		}
 
-		else if (billObject.getUserType().equalsIgnoreCase("employee")) {
+		else if (userType.equalsIgnoreCase("employee")) {
 			calculateDiscount(amount, 0.3f);
 
-		} else if (billObject.getUserType().equalsIgnoreCase("affiliate")) {
+		} else if (userType.equalsIgnoreCase("affiliate")) {
 			calculateDiscount(amount, 0.1f);
 
 		} else {

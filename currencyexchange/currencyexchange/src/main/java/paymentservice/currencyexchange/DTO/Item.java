@@ -29,4 +29,14 @@ public class Item {
 	}
 	
 	
+	public Item() {
+	}
+	public Item(String item, String itemCategory, float amount) {
+		
+		this.item = item;
+		this.itemCategory = itemCategory;
+		this.amount = amount;
+	}
+	
+	
 }

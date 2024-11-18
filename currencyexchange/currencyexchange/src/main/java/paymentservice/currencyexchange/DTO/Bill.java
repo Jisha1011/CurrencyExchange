@@ -47,6 +47,19 @@ public class Bill {
 	public void setTargetCurrency(String targetCurrency) {
 		this.targetCurrency = targetCurrency;
 	}
+	
+	
+	public Bill() {
+		
+	}
+	public Bill(List<Item> item, String userType, int customerTenure, String originalCurrency, String targetCurrency) {
+		
+		this.item = item;
+		this.userType = userType;
+		this.customerTenure = customerTenure;
+		this.originalCurrency = originalCurrency;
+		this.targetCurrency = targetCurrency;
+	}
 	@Override
 	public String toString() {
 		return "Bill [item=" + item + ", originalCurrency=" + originalCurrency + ", targetCurrency=" + targetCurrency
